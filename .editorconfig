@@ -1,0 +1,28 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Default settings:
+# A newline ending every file
+# Use 4 spaces as indentation
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8-bom
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Dotnet files settings (.cs, .csx, .vb, .vbx, .fs, .fsx)
+[*.{cs,csx,vb,vbx,fs,fsx}]
+indent_size = 4
+# .NET coding convention settings for editorconfig C# code style settings:
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference?view=vs-2019
+
+# specify the maximum length of a line
+max_line_length = 100
+
+# YAML files settings
+[*.yml, *.yaml]
+indent_size = 2
