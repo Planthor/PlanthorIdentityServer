@@ -1,6 +1,10 @@
 
-This repository contains a .NET 8 project that implements Duende Identity Server v7 for Identity Provider (IdP) functionality.
-
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Planthor_PlanthorIdentityServer&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Planthor_PlanthorIdentityServer)
 
 # Getting Started
 
