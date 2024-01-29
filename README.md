@@ -13,7 +13,7 @@ This section will provide you with all the necessary information to get the proj
 # Prerequisites
 
 .NET 8.0 SDK
-An IDE (Visual Studio 2024, JetBrains Rider or VS Code)
+An IDE (Visual Studio, JetBrains Rider or VS Code)
 Duende Identity Server v7
 
 # Installation
