@@ -1,4 +1,5 @@
 @page
+@using Planthor.IdentityServerAspNetIdentity.Pages.Ciba
 @model Planthor.IdentityServerAspNetIdentity.Pages.Ciba.Consent
 @{
 }
@@ -40,7 +41,50 @@
                             <ul class="list-group list-group-flush">
                                 @foreach (var scope in Model.View.IdentityScopes)
                                 {
-                                    <partial name="_ScopeListItem" model="@scope" />
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck"
+                                                   type="checkbox"
+                                                   name="Input.ScopesConsented"
+                                                   id="scopes_@scope.Value"
+                                                   value="@scope.Value"
+                                                   checked="@scope.Checked"
+                                                   disabled="@scope.Required" />
+                                            @if (scope.Required)
+                                            {
+                                                <input type="hidden"
+                                                       name="Input.ScopesConsented"
+                                                       value="@scope.Value" />
+                                            }
+                                            <strong>@scope.DisplayName</strong>
+                                            @if (scope.Emphasize)
+                                            {
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            }
+                                        </label>
+                                        @if (scope.Required)
+                                        {
+                                            <span><em>(required)</em></span>
+                                        }
+                                        @if (scope.Description != null)
+                                        {
+                                            <div class="consent-description">
+                                                <label for="scopes_@scope.Value">@scope.Description</label>
+                                            </div>
+                                        }
+                                        @if (scope.Resources?.Any() == true)
+                                        {
+                                            <div class="consent-description">
+                                                <label>Will be available to these resource servers:</label>
+                                                <ul>
+                                                @foreach (var resource in scope.Resources)
+                                                {
+                                                    <li>@resource.DisplayName</li>
+                                                }
+                                                </ul>
+                                            </div>
+                                        }
+                                    </li>
                                 }
                             </ul>
                         </div>
@@ -58,7 +102,50 @@
                             <ul class="list-group list-group-flush">
                                 @foreach (var scope in Model.View.ApiScopes)
                                 {
-                                    <partial name="_ScopeListItem" model="scope" />
+                                    <li class="list-group-item">
+                                        <label>
+                                            <input class="consent-scopecheck"
+                                                   type="checkbox"
+                                                   name="Input.ScopesConsented"
+                                                   id="scopes_@scope.Value"
+                                                   value="@scope.Value"
+                                                   checked="@scope.Checked"
+                                                   disabled="@scope.Required" />
+                                            @if (scope.Required)
+                                            {
+                                                <input type="hidden"
+                                                       name="Input.ScopesConsented"
+                                                       value="@scope.Value" />
+                                            }
+                                            <strong>@scope.DisplayName</strong>
+                                            @if (scope.Emphasize)
+                                            {
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            }
+                                        </label>
+                                        @if (scope.Required)
+                                        {
+                                            <span><em>(required)</em></span>
+                                        }
+                                        @if (scope.Description != null)
+                                        {
+                                            <div class="consent-description">
+                                                <label for="scopes_@scope.Value">@scope.Description</label>
+                                            </div>
+                                        }
+                                        @if (scope.Resources?.Any() == true)
+                                        {
+                                            <div class="consent-description">
+                                                <label>Will be available to these resource servers:</label>
+                                                <ul>
+                                                @foreach (var resource in scope.Resources)
+                                                {
+                                                    <li>@resource.DisplayName</li>
+                                                }
+                                                </ul>
+                                            </div>
+                                        }
+                                    </li>
                                 }
                             </ul>
                         </div>
