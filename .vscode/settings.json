@@ -1,5 +1,9 @@
 {
     "cSpell.words": [
         "Planthor"
-    ]
+    ],
+    "sonarlint.connectedMode.project": {
+        "connectionId": "planthor",
+        "projectKey": "Planthor_PlanthorIdentityServer"
+    }
 }
