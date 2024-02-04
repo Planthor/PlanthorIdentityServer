@@ -1,27 +1,18 @@
 {
 	"name": "PlanthorIdentityServer-ws",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"args": { 
-		
-			"VARIANT": "8.0",
-			"NODE_VERSION": "lts/*"
-		}
-	},
-	
-	// Configure tool-specific properties.
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "planthoridentity",
+    "workspaceFolder": "/workspace/PlanthorIdentityServer",
 	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {	
-			// Add the IDs of extensions you want installed when the container is created.
+		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csharp",
 				"ms-dotnettools.csdevkit"
 			]
 		}
 	},
-
-	"forwardPorts": [5000, 5001],
+	//Expose port here
+	"forwardPorts": [5000,5001,5432,8888],
 	"postCreateCommand": ".devcontainer/scripts/postCreateCommand.sh",
 	"remoteUser": "vscode"
 	
