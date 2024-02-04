@@ -1,5 +1,5 @@
 version: '3.8'
-name: planthor-identity-infrastructure-ws
+name: planthor-identity-infrastructure-ws 
 
 services:
   planthoridentity:
