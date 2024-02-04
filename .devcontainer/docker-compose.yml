@@ -6,9 +6,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        VARIANT: "8.0"
-        NODE_VERSION: "lts/*"
     volumes:
       - ..:/workspace/PlanthorIdentityServer:cached
     command: sleep infinity

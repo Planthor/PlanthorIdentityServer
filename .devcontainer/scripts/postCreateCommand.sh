@@ -1,4 +1,4 @@
 #!/bin/bash
 
-#Setting up from start
+#Setting up comandlines from starting devcontainer
 dotnet restore
