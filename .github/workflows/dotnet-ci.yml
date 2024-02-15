@@ -56,13 +56,12 @@ jobs:
           dotnet build --no-restore
           dotnet test --no-build --verbosity normal
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-
   docker-build:
     runs-on: ubuntu-latest
     name: Docker build
     steps:
       - uses: actions/checkout@v4
-    
+
       - name: Docker Login
         uses: docker/login-action@v3.0.0
         with:
@@ -76,17 +75,17 @@ jobs:
         run: |
           DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
           echo DOCKER_IMAGE="trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
-      - name: docker build images
+
+      - name: docker build image
         run: |
          docker buildx build -t $DOCKER_IMAGE .
         env:
           DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
-      - name: Check docker images 
-        run: |
-          docker images 
-      - name: push image
+
+      - name: push image to docker hub
         if: github.ref == 'refs/heads/main'
         run: |
+          docker images
           docker push $DOCKER_IMAGE
         env:
             DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
