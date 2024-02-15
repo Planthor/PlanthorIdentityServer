@@ -59,11 +59,10 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
-
     name: Docker build
     steps:
       - uses: actions/checkout@v4
-
+    
       - name: Docker Login
         uses: docker/login-action@v3.0.0
         with:
@@ -72,10 +71,20 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v5.1.0
-    
+      - name: create docker image name
+        id: dockerimage
+        run: |
+          DOKCER_TAG='testcandidates-$(date +%Y%m%d%H%M%S)'
+          DOCKER_IMAGE='trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG' >> $GITHUB_OUTPUT
+      - name: docker build images
+        run: |
+          docker build -t $DOCKER_IMAGE .
+        env:
+          DOCKER_IMAGE: "${{ steps.dockerimage.outputs.DOCKER_IMAGE }}"
+
       - name: Check docker images 
         run: |
           docker images
+      
+      
               
