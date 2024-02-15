@@ -13,7 +13,7 @@ RUN dotnet publish -c Release -o out
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
-LABEL author="Planthor Team"
+LABEL authors="Planthor team "
 WORKDIR /app
 EXPOSE 8080
 COPY --from=build /app/Planthor.IdentityServerAspNetIdentity/out ./
