@@ -74,12 +74,12 @@ jobs:
       - name: create docker image name
         id: dockerimage
         run: |
-          DOKCER_TAG='testcandidates-$(date +%Y%m%d%H%M%S)'
-          DOCKER_IMAGE='trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG' >> $GITHUB_OUTPUT
+          DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
+          DOCKER_IMAGE="trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG"
+          echo $DOCKER_IMAGE >> "$GITHUB_OUTPUT"
       - name: docker build images
         run: |
-          docker buildx build -t ${{ steps.dockerimage.outputs.DOCKER_IMAGE }} .
-
+         docker buildx build -t ${{ steps.dockerimage.outputs.DOCKER_IMAGE }} .
       - name: Check docker images 
         run: |
           docker images
