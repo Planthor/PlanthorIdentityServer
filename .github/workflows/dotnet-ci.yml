@@ -85,6 +85,7 @@ jobs:
         run: |
           docker images 
       - name: push image
+        if: github.ref == 'refs/heads/main'
         run: |
           docker push $DOCKER_IMAGE
         env:
