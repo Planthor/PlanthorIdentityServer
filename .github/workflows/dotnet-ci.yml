@@ -78,10 +78,14 @@ jobs:
           echo DOCKER_IMAGE="trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
       - name: docker build images
         run: |
-         docker buildx build -t ${{ steps.dockerimage.outputs.DOCKER_IMAGE }} .
+         docker buildx build -t $DOCKER_IMAGE .
+        env:
+          DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
       - name: Check docker images 
         run: |
-          docker images
-      
-      
-              
+          docker images 
+      - name: push image
+        run: |
+          docker push $DOCKER_IMAGE
+        env:
+            DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
