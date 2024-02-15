@@ -69,7 +69,7 @@ jobs:
         with:
           # provided by @akakshuki
           # TODO: change to technical user account in the future
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build and push Docker images
