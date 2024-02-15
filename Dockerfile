@@ -17,5 +17,4 @@ LABEL author="Planthor Team"
 WORKDIR /app
 EXPOSE 8080
 COPY --from=build /app/Planthor.IdentityServerAspNetIdentity/out ./
-
 ENTRYPOINT ["dotnet", "Planthor.IdentityServerAspNetIdentity.dll"]
