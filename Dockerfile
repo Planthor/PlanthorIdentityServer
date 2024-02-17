@@ -6,7 +6,7 @@ COPY *.sln .
 COPY ./src/Planthor.IdentityServerAspNetIdentity/*.csproj ./src/Planthor.IdentityServerAspNetIdentity/
 RUN dotnet restore
 
-# copy everything else and build app
+# copy everything else and run release app
 COPY ./src/Planthor.IdentityServerAspNetIdentity/. /app/Planthor.IdentityServerAspNetIdentity/
 WORKDIR /app/Planthor.IdentityServerAspNetIdentity
 RUN dotnet publish -c Release -o out
