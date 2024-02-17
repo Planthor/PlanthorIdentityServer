@@ -38,19 +38,19 @@ public class Callback : PageModel
         _logger = logger;
         _events = events;
     }
-        
+
     public async Task<IActionResult> OnGet()
     {
         // read external identity from the temporary cookie
         var result = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
-        if (result.Succeeded != true)
+        if (!result.Succeeded)
         {
-            throw new InvalidOperationException($"External authentication error: { result.Failure }");
+            throw new InvalidOperationException($"External authentication error: {result.Failure}");
         }
 
-        var externalUser = result.Principal ?? 
+        var externalUser = result.Principal ??
             throw new InvalidOperationException("External authentication produced a null Principal");
-		
+
         if (_logger.IsEnabled(LogLevel.Debug))
         {
             var externalClaims = externalUser.Claims.Select(c => $"{c.Type}: {c.Value}");
@@ -70,13 +70,7 @@ public class Callback : PageModel
 
         // find external user
         var user = await _userManager.FindByLoginAsync(provider, providerUserId);
-        if (user == null)
-        {
-            // this might be where you might initiate a custom workflow for user registration
-            // in this sample we don't show how that would be done, as our sample implementation
-            // simply auto-provisions new external user
-            user = await AutoProvisionUserAsync(provider, providerUserId, externalUser.Claims);
-        }
+        user ??= await AutoProvisionUserAsync(provider, providerUserId, externalUser.Claims);
 
         // this allows us to collect any additional claims or properties
         // for the specific protocols used and store them in the local auth cookie.
@@ -84,7 +78,7 @@ public class Callback : PageModel
         var additionalLocalClaims = new List<Claim>();
         var localSignInProps = new AuthenticationProperties();
         CaptureExternalLoginContext(result, additionalLocalClaims, localSignInProps);
-            
+
         // issue authentication cookie for user
         await _signInManager.SignInWithClaimsAsync(user, localSignInProps, additionalLocalClaims);
 
@@ -99,14 +93,13 @@ public class Callback : PageModel
         await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.Id, user.UserName, true, context?.Client.ClientId));
         Telemetry.Metrics.UserLogin(context?.Client.ClientId, provider!);
 
-        if (context != null)
+        if (context != null
+            && context.IsNativeClient())
         {
-            if (context.IsNativeClient())
-            {
-                // The client is native, so this change in how to
-                // return the response is for better UX for the end user.
-                return this.LoadingPage(returnUrl);
-            }
+            // The client is native, so this change in how to
+            // return the response is for better UX for the end user.
+            return this.LoadingPage(returnUrl);
+
         }
 
         return Redirect(returnUrl);
@@ -116,7 +109,7 @@ public class Callback : PageModel
     private async Task<ApplicationUser> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
     {
         var sub = Guid.NewGuid().ToString();
-            
+
         var user = new ApplicationUser
         {
             Id = sub,
@@ -130,7 +123,7 @@ public class Callback : PageModel
         {
             user.Email = email;
         }
-            
+
         // create a list of claims that we want to transfer into our store
         var filtered = new List<Claim>();
 
@@ -162,16 +155,25 @@ public class Callback : PageModel
         }
 
         var identityResult = await _userManager.CreateAsync(user);
-        if (!identityResult.Succeeded) throw new InvalidOperationException(identityResult.Errors.First().Description);
+        if (!identityResult.Succeeded)
+        {
+            throw new InvalidOperationException(identityResult.Errors.First().Description);
+        }
 
         if (filtered.Count != 0)
         {
             identityResult = await _userManager.AddClaimsAsync(user, filtered);
-            if (!identityResult.Succeeded) throw new InvalidOperationException(identityResult.Errors.First().Description);
+            if (!identityResult.Succeeded)
+            {
+                throw new InvalidOperationException(identityResult.Errors.First().Description);
+            }
         }
 
         identityResult = await _userManager.AddLoginAsync(user, new UserLoginInfo(provider, providerUserId, provider));
-        if (!identityResult.Succeeded) throw new InvalidOperationException(identityResult.Errors.First().Description);
+        if (!identityResult.Succeeded)
+        {
+            throw new InvalidOperationException(identityResult.Errors.First().Description);
+        }
 
         return user;
     }

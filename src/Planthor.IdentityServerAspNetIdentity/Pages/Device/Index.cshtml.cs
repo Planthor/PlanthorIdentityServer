@@ -1,7 +1,6 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
-using Duende.IdentityServer.Configuration;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
@@ -11,7 +10,6 @@ using Planthor.IdentityServerAspNetIdentity.Pages.Consent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Options;
 
 namespace Planthor.IdentityServerAspNetIdentity.Pages.Device;
 
@@ -21,19 +19,13 @@ public class Index : PageModel
 {
     private readonly IDeviceFlowInteractionService _interaction;
     private readonly IEventService _events;
-    private readonly IOptions<IdentityServerOptions> _options;
-    private readonly ILogger<Index> _logger;
 
     public Index(
         IDeviceFlowInteractionService interaction,
-        IEventService eventService,
-        IOptions<IdentityServerOptions> options,
-        ILogger<Index> logger)
+        IEventService eventService)
     {
         _interaction = interaction;
         _events = eventService;
-        _options = options;
-        _logger = logger;
     }
 
     public ViewModel View { get; set; } = default!;
@@ -54,7 +46,8 @@ public class Index : PageModel
             return Page();
         }
 
-        Input = new InputModel { 
+        Input = new InputModel
+        {
             UserCode = userCode,
         };
 
@@ -64,7 +57,10 @@ public class Index : PageModel
     public async Task<IActionResult> OnPost()
     {
         var request = await _interaction.GetAuthorizationContextAsync(Input.UserCode ?? throw new ArgumentNullException(nameof(Input.UserCode)));
-        if (request == null) return RedirectToPage("/Home/Error/Index");
+        if (request == null)
+        {
+            return RedirectToPage("/Home/Error/Index");
+        }
 
         ConsentResponse? grantedConsent = null;
 
@@ -87,7 +83,7 @@ public class Index : PageModel
             if (Input.ScopesConsented.Any())
             {
                 var scopes = Input.ScopesConsented;
-                if (ConsentOptions.EnableOfflineAccess == false)
+                if (!ConsentOptions.EnableOfflineAccess)
                 {
                     scopes = scopes.Where(x => x != Duende.IdentityServer.IdentityServerConstants.StandardScopes.OfflineAccess);
                 }
@@ -100,7 +96,14 @@ public class Index : PageModel
                 };
 
                 // emit event
-                await _events.RaiseAsync(new ConsentGrantedEvent(User.GetSubjectId(), request.Client.ClientId, request.ValidatedResources.RawScopeValues, grantedConsent.ScopesValuesConsented, grantedConsent.RememberConsent));
+                await _events.RaiseAsync(
+                    new ConsentGrantedEvent(
+                        User.GetSubjectId(),
+                        request.Client.ClientId,
+                        request.ValidatedResources.RawScopeValues,
+                        grantedConsent.ScopesValuesConsented,
+                        grantedConsent.RememberConsent));
+
                 Telemetry.Metrics.ConsentGranted(request.Client.ClientId, grantedConsent.ScopesValuesConsented, grantedConsent.RememberConsent);
                 var denied = request.ValidatedResources.ParsedScopes.Select(s => s.ParsedName).Except(grantedConsent.ScopesValuesConsented);
                 Telemetry.Metrics.ConsentDenied(request.Client.ClientId, denied);
