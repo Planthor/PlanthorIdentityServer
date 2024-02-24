@@ -30,6 +30,23 @@ public static class Config
                 AllowedScopes = { "scope1" }
             },
 
+            new Client
+            {
+                ClientId = "planthor-web",
+                ClientName = "Planthor Web Client",
+                ClientSecrets = { new Secret("Planthor@123".Sha256()) },
+
+                AllowedGrantTypes = GrantTypes.Code,
+                RequirePkce = true,
+
+                // TODO: Trung: find a way to dynamically seed these in db and configurable in IDP.
+                RedirectUris = { "https://localhost:5001/signin-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:5001/signout-callback-oidc" },
+
+                AllowOfflineAccess = true,
+                AllowedScopes = { "openid", "profile" }
+            },
+
             // interactive client using code flow + pkce
             new Client
             {
@@ -43,7 +60,8 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" }
+                AllowedScopes = { "openid", "profile", "scope2" },
+                AllowedCorsOrigins = { "*" }
             },
         ];
 }
