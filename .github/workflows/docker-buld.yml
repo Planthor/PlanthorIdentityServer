@@ -7,31 +7,12 @@ on:
     branches: ["main"]
 
 jobs:
-  docker-build-dev:
-    runs-on: ubuntu-latest
-    name: Docker build test image
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: create docker image name
-        id: dockerimage
-        run: |
-          DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
-          echo DOCKER_IMAGE="planthordev/identityserver:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
-
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v5.1.0
-        with:      
-          file: ./Dockerfile
-          tags: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
-          github-token: ${{ github.token }}
-          push: false
 
   docker-build-prod:
     runs-on: ubuntu-latest
-    name: Docker build
-    if: github.ref == 'refs/heads/main'
+    name: Run docker build  
     steps:
+      
       - uses: actions/checkout@v4
 
       - name: Docker Login
@@ -52,5 +33,6 @@ jobs:
           file: ./Dockerfile
           tags: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
           github-token: ${{ github.token }}
-          push: true
+          # only push at main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
                 
