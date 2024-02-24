@@ -59,7 +59,7 @@ jobs:
         id: dockerimage
         run: |
           DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
-          echo DOCKER_IMAGE="Planthor/PlanthorIdentityServer:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
+          echo DOCKER_IMAGE="planthor/planthorpdentityserver:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
