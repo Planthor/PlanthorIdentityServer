@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  docker-build-prod:
+  docker-build:
     runs-on: ubuntu-latest
     name: Run docker build  
     steps:
@@ -21,17 +21,17 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: create docker image name
-        id: dockerimage
+      - name: define docker image name
+        id: define_docker_image
         run: |
-          DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
-          echo DOCKER_IMAGE="planthordev/identityserver:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
+          DOCKER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
+          echo DOCKER_IMAGE="planthordev/identityserver:$DOCKER_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
         with:      
           file: ./Dockerfile
-          tags: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
+          tags: ${{ steps.define_docker_image.outputs.DOCKER_IMAGE }}
           github-token: ${{ github.token }}
           # only push at main branch
           push: ${{ github.ref == 'refs/heads/main' }}

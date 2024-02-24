@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  converage:
+  coverage:
     name: Run Coverage 
     runs-on: ubuntu-22.04
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: run converage code 
+      - name: run coverage code 
         run: |
           dotnet tool install --global dotnet-coverage
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
@@ -34,10 +34,10 @@ jobs:
           name: coverage-report
           path: ./coverage.xml
 
-  sonnar-scan:
+  sonar-scan:
     name: Run SonarScanner
     runs-on: ubuntu-22.04
-    needs: [ converage ]
+    needs: [ coverage ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
