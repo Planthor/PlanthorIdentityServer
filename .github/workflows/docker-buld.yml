@@ -59,7 +59,7 @@ jobs:
         id: dockerimage
         run: |
           DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
-          echo DOCKER_IMAGE="planthor/planthorpdentityserver:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
+          echo DOCKER_IMAGE="planthordev/identityserver:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
@@ -67,5 +67,5 @@ jobs:
           file: ./Dockerfile
           tags: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
           github-token: ${{ github.token }}
-          push: false
+          push: true
                 
