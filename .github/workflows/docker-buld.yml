@@ -1,4 +1,4 @@
-name: .NET and SonarCloud scan
+name: Docker CI workflow 
 
 on:
   push:
