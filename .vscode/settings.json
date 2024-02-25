@@ -1,9 +1,15 @@
 {
     "cSpell.words": [
-        "Planthor"
+        "Dsonar",
+        "Planthor",
+        "wwwroot"
     ],
     "sonarlint.connectedMode.project": {
         "connectionId": "planthor",
         "projectKey": "Planthor_PlanthorIdentityServer"
-    }
+    },
+    "cSpell.enableFiletypes": [
+        "github-actions-workflow",
+        "shellscript"
+    ]
 }

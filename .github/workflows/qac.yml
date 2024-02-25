@@ -20,14 +20,23 @@ jobs:
         with:
           dotnet-version: 8.x
 
+      - name: Cache .NET packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-dotnet-
+
       - name: Restore dependencies
         run: dotnet restore
 
       - name: run coverage code 
         run: |
           dotnet tool install --global dotnet-coverage
+          dotnet build --no-incremental
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
-      
+
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
@@ -41,12 +50,40 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      - name: Create sonar cache
+        run: |
+          echo 'SONAR_USER_HOME=/github/workspace/.sonar' >> $GITHUB_ENV
+          mkdir -p .sonar/cache
+
+      - name: Cache .NET packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-dotnet-
+
+      - name: Cache SonarScanner
+        uses: actions/cache@v4
+        with:
+          path: .sonar/cache
+          key: ${{ runner.os }}-sonar-${{ hashFiles('./.github/workflows/qac.yml') }}
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: ./coverage.xml
+          path: ./coverage-report
+      
+      - name: Restore dependencies
+        run: |
+          dotnet restore
+          dotnet build --no-incremental
 
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@v2.0.1
@@ -58,4 +95,8 @@ jobs:
           args:
             -Dsonar.projectKey=Planthor_PlanthorIdentityServer
             -Dsonar.organization=planthor
-            -Dsonar.tests=./coverage.xml
+            -Dsonar.exclusions=**/wwwroot/**
+            -Dsonar.tests=.
+            -Dsonar.sourceEncoding=UTF-8
+            # TODO: will uncomment when coverage report is not empty
+            # -Dsonar.coverageReportPaths=./coverage-report/coverage.xml
