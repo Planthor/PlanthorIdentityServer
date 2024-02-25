@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: define docker image name
+      - name: Define docker image name
         id: define_docker_image
         run: |
           DOCKER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
