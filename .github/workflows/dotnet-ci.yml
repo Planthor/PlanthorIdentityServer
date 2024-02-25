@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET and SonarCloud scan
+name: Dot NET CI Workflow 
 
 on:
   push:
@@ -10,82 +7,21 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  dotnet-build:
+    name: Run build dot Net project
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: "zulu" # Alternative distribution options are available.
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache SonarCloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v3
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: pwsh
-        run: |
-          New-Item -Path ./.sonar/scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: pwsh
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Planthor_PlanthorIdentityServer" /o:"planthor" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet restore
-          dotnet build --no-restore
-          dotnet test --no-build --verbosity normal
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-  docker-build:
-    runs-on: ubuntu-latest
-    name: Docker build
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Docker Login
-        uses: docker/login-action@v3.0.0
-        with:
-          # provided by @akakshuki
-          # TODO: change to technical user account in the future
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: create docker image name
-        id: dockerimage
-        run: |
-          DOKCER_TAG="testcandidates-$(date +%Y%m%d%H%M%S)"
-          echo DOCKER_IMAGE="trunglepham1202/planthor-clientfrontendwebapp:$DOKCER_TAG" >> "$GITHUB_OUTPUT"
-
-      - name: docker build image
-        run: |
-         docker buildx build -t $DOCKER_IMAGE .
-        env:
-          DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
-
-      - name: push image to docker hub
-        if: github.ref == 'refs/heads/main'
-        run: |
-          docker images
-          docker push $DOCKER_IMAGE
-        env:
-            DOCKER_IMAGE: ${{ steps.dockerimage.outputs.DOCKER_IMAGE }}
+      - name: Build
+        run: dotnet build --no-restore
