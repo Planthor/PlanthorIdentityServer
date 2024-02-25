@@ -71,10 +71,11 @@ jobs:
             ${{ runner.os }}-dotnet-
 
       - name: Cache SonarScanner
+        id: cache-sonar-scanner  
         uses: actions/cache@v4
         with:
-          path: .sonar/cache
-          key: ${{ runner.os }}-sonar-${{ hashFiles('./.github/workflows/qac.yml') }}
+            path: .sonar/cache
+            key: ${{ runner.os }}-sonar-${{ hashFiles('./.github/workflows/qac.yml') }}
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
@@ -84,9 +85,10 @@ jobs:
       
       - name: Restore dependencies
         run: |
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
           dotnet restore
           dotnet build --no-incremental
-
+      
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@v2.0.1
         env:
@@ -94,11 +96,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
           SONAR_HOST_URL: https://sonarcloud.io
         with:
+          projectBaseDir: .
           args:
             -Dsonar.projectKey=Planthor_PlanthorIdentityServer
             -Dsonar.organization=planthor
-            -Dsonar.exclusions=**/wwwroot/**
-            -Dsonar.tests=.
-            -Dsonar.sourceEncoding=UTF-8
-            # TODO: will uncomment when coverage report is not empty
-            # -Dsonar.coverageReportPaths=./coverage-report/coverage.xml
+            -Dsonar.projectBaseDir=./src/
+
+
+            
