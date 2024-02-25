@@ -3,7 +3,6 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY ./certificates/aspnetapp.pfx ./certificates/
 COPY ./src/Planthor.IdentityServerAspNetIdentity/*.csproj ./src/Planthor.IdentityServerAspNetIdentity/
 RUN dotnet restore
 

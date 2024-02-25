@@ -26,19 +26,20 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
-#   TODO: Trung: check issue with identity container cannot connect db (Socket: Name or service not known).
+## TODO: Trung: Check container having issue with 404 page/resources.
 #   identity:
 #     image: dotnettest
-#     restart: always
 #     ports:
 #       - "5001:5001"
 #     environment:
-#       ASPNETCORE_HTTP_PORTS: 5001
 #       ASPNETCORE_HTTPS_PORTS: 5001
 #       ASPNETCORE_URLS: https://*:5001
+#       ASPNETCORE_ENVIRONMENT: Development
 #       ASPNETCORE_Kestrel__Certificates__Default__Password: Planthor@123
-#       ASPNETCORE_Kestrel__Certificates__Default__Path: aspnetapp.pfx
-#       ConnectionStrings__DefaultConnection: HOST=posgresql;PORT=5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY
+#       ASPNETCORE_Kestrel__Certificates__Default__Path: certificates/aspnetapp.pfx
+#       ConnectionStrings__DefaultConnection: HOST=postgresql:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY
+#     volumes:
+#       - ../certificates:/app/certificates
 
 volumes:
   local-pgdata:

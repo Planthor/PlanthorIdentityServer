@@ -25,16 +25,12 @@ try
     if (args.Contains("/seed"))
     {
         Log.Information("Seeding database...");
-        SeedData.EnsureSeedData(app);
+        await SeedData.EnsureSeedDataAsync(app);
         Log.Information("Done seeding database. Exiting.");
         return;
     }
 
     app.Run();
-}
-catch (Exception ex) when (ex is not HostAbortedException)
-{
-    Log.Fatal(ex, "Unhandled exception");
 }
 finally
 {
