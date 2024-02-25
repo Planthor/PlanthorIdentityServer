@@ -7,14 +7,16 @@ COPY ./src/Planthor.IdentityServerAspNetIdentity/*.csproj ./src/Planthor.Identit
 RUN dotnet restore
 
 # copy everything else and run release app
-COPY ./src/Planthor.IdentityServerAspNetIdentity/. /app/Planthor.IdentityServerAspNetIdentity/
-WORKDIR /app/Planthor.IdentityServerAspNetIdentity
+COPY ./src/Planthor.IdentityServerAspNetIdentity/. /app/src/Planthor.IdentityServerAspNetIdentity/
+WORKDIR /app/src/Planthor.IdentityServerAspNetIdentity
 RUN dotnet publish -c Release -o out
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 LABEL authors="Planthor team"
 WORKDIR /app
-EXPOSE 8080
-COPY --from=build /app/Planthor.IdentityServerAspNetIdentity/out ./
+
+EXPOSE 5001
+COPY --from=build /app/src/Planthor.IdentityServerAspNetIdentity/out ./
+
 ENTRYPOINT ["dotnet", "Planthor.IdentityServerAspNetIdentity.dll"]
