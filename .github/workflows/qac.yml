@@ -57,10 +57,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
-      - name: Create sonar cache
-        run: |
-          echo 'SONAR_USER_HOME=/github/workspace/.sonar' >> $GITHUB_ENV
-          mkdir -p .sonar/cache
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -79,7 +75,7 @@ jobs:
       - name: Cache SonarScanner
         uses: actions/cache@v4
         with:
-          path: .sonar/cache
+          path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar-${{ hashFiles('./.github/workflows/qac.yml') }}
 
       - name: Download coverage report
