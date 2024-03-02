@@ -33,8 +33,8 @@ jobs:
 
       - name: run coverage code 
         run: |
-          dotnet tool install --global dotnet-coverage
-          dotnet build --no-incremental
+          dotnet tool insta --global dotnet-coverage
+          dotnet bui --no-incremental
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
       - name: Upload coverage report
