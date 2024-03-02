@@ -31,10 +31,10 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: run coverage code 
+      - name: Run coverage code 
         run: |
-          dotnet tool insta --global dotnet-coverage
-          dotnet bui --no-incremental
+          dotnet tool install --global dotnet-coverage
+          dotnet build --no-incremental
           dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
 
       - name: Upload coverage report
