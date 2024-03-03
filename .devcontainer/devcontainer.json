@@ -3,6 +3,9 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "planthoridentity",
   "workspaceFolder": "/workspace/PlanthorIdentityServer",
+  "containerEnv": {
+    "ConnectionStrings__DefaultConnection": "HOST=postgresql:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY"
+  },  
   "customizations": {
     "vscode": {
       "extensions": ["ms-dotnettools.csharp", "ms-dotnettools.csdevkit"]

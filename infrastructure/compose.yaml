@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: Planthor@123
       POSTGRES_DB: PLANTHOR_IDENTITY
     volumes:
-      - local-pgdata:/var/lib/postgresql/data
+      - ./.data/local-pgdata:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4:8
@@ -26,20 +26,21 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
 
-  # identity:
-  #   image: dotnettest
-  #   ports:
-  #     - "5001:5001"
-  #   environment:
-  #     ASPNETCORE_HTTPS_PORTS: 5001
-  #     ASPNETCORE_URLS: https://*:5001
-  #     ASPNETCORE_ENVIRONMENT: Development
-  #     ASPNETCORE_Kestrel__Certificates__Default__Password: Planthor@123
-  #     ASPNETCORE_Kestrel__Certificates__Default__Path: certificates/aspnetapp.pfx
-  #     ConnectionStrings__DefaultConnection: HOST=postgresql:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY
-  #   volumes:
-  #     - ../certificates:/app/certificates
+  identity:
+    image: planthordev/identityserver:testcandidates-20240302042003
+    ports:
+      - "5001:5001"
+    environment:
+      ASPNETCORE_HTTPS_PORTS: 5001
+      ASPNETCORE_URLS: https://*:5001
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_Kestrel__Certificates__Default__Password: Planthor@123
+      ASPNETCORE_Kestrel__Certificates__Default__Path: certificates/server.pfx
+      ConnectionStrings__DefaultConnection: HOST=postgresql:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY
+    volumes:
+      - ../certificates:/app/certificates
 
 volumes:
   local-pgdata:
   pgadmin-data:
+# openssl pkcs12 -export -out server.pfx -inkey private.pem -in server.crt
