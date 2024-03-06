@@ -15,8 +15,8 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 LABEL authors="Planthor team"
 WORKDIR /app
-
 EXPOSE 5001
 COPY --from=build /app/src/Planthor.IdentityServerAspNetIdentity/out ./
-
+RUN echo 'dotnet Planthor.IdentityServerAspNetIdentity.dll /seed' > run_seed.sh && \
+    chmod +x run_seed.sh
 ENTRYPOINT ["dotnet", "Planthor.IdentityServerAspNetIdentity.dll"]
