@@ -37,8 +37,8 @@ dotnet run
 ```
 ## For run with docker-compose 
 
-- Generate self-certificates from `./infrastructure/certificates`
-- Use Docker compose file in `./infrastructure`
+- Generate self-certificates from `./infrastructure/certificates`.
+- Use Docker compose file in `./infrastructure` folder.
 
 # Usage
 This project serves as an Identity Provider (IdP) using Duende Identity Server v7. It can be utilized to authenticate and authorize users in Planthor applications, APIs, etc.

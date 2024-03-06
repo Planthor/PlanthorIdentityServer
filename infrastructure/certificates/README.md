@@ -10,7 +10,7 @@ Developers want to use the Planthor Identity Server DockerFile should generate a
 ```
 
 ## For MacOs / Linux 
-```
+```sh
 
 ./infrastructure/certificates/generate-dev-certs.sh
 
