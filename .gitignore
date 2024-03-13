@@ -771,3 +771,6 @@ ehthumbs_vista.db
 *.der
 *.priv
 *.p12
+
+# git config
+.gitconfig
