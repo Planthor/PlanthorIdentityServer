@@ -84,7 +84,7 @@ jobs:
           name: coverage-report
           path: ./coverage-report
 
-      - name: Restore dependencies
+      - name: Analysis with dotnet-sonarscanner
         run: |
           dotnet tool install --global dotnet-sonarscanner
 
