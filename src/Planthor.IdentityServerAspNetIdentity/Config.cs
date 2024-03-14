@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityServer.Models;
+using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace Planthor.IdentityServerAspNetIdentity;
 
@@ -13,47 +14,29 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         [
             new ApiScope("scope1"),
-            new ApiScope("scope2"),
         ];
 
+    // TODO: Trung: find a way to have UI to configure these client / seed these in db and configurable in IDP.
     public static IEnumerable<Client> Clients =>
         [
-            // m2m client credentials flow client
             new Client
             {
-                ClientId = "m2m.client",
-                ClientName = "Client Credentials Client",
+                ClientId = "planthor",
+                ClientName = "Planthor Client",
 
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
-
-                AllowedScopes = { "scope1" },
-            },
-
-            new Client
-            {
-                ClientId = "planthor-web",
-                ClientName = "Planthor Web Client",
+                // TODO: Trung: find way to store secret securely.
                 ClientSecrets = { new Secret("Planthor@123".Sha256()) },
 
-                AllowedGrantTypes = GrantTypes.Code,
-                RequirePkce = true,
-
-                // TODO: Trung: find a way to dynamically seed these in db and configurable in IDP.
+                AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile" }
-            },
+                AllowedScopes = {
+                    StandardScopes.OpenId,
+                    StandardScopes.Profile },
 
-            // interactive client using code flow + pkce
-            new Client
-            {
-                ClientId = "interactive",
-                ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
-
-                AllowedGrantTypes = GrantTypes.Code,
-
-                AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" },
-            },
+                RedirectUris = {
+                    "https://www.thunderclient.com/oauth/callback", // VS Code Thunder Client
+                    "https://localhost:5173/api/oauth/callback", // Local Planthor Web
+                },
+            }
         ];
 }
