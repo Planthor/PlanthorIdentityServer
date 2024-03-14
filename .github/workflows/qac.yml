@@ -1,4 +1,4 @@
-name: Code Analysis
+﻿name: Code Analysis
 
 on:
   push:
@@ -9,12 +9,12 @@ on:
 jobs:
 
   coverage:
-    name: Run Coverage 
+    name: Run Coverage
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -31,7 +31,7 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Run coverage code 
+      - name: Run coverage code
         run: |
           dotnet tool install --global dotnet-coverage
           dotnet build --no-incremental
@@ -84,7 +84,7 @@ jobs:
           name: coverage-report
           path: ./coverage-report
 
-      - name: Restore dependencies
+      - name: Analysis with dotnet-sonarscanner
         run: |
           dotnet tool install --global dotnet-sonarscanner
 
@@ -93,8 +93,8 @@ jobs:
           /o:"planthor" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.exclusions="src/*/wwwroot/lib"  
-          
+          /d:sonar.exclusions="**src/*/wwwroot/lib/**/*"
+
           dotnet restore
           dotnet build --no-incremental
 
