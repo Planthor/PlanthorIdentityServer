@@ -35,7 +35,8 @@ public static class Config
 
                 RedirectUris = {
                     "https://www.thunderclient.com/oauth/callback", // VS Code Thunder Client
-                    "https://localhost:5173/api/auth/callback", // Local Planthor Web
+                    "https://localhost:5173/api/auth/callback", // Local Planthor Web https
+                    "http://localhost:5173/api/auth/callback", // Local Planthor Web http
                 },
             }
         ];
