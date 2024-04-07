@@ -284,6 +284,9 @@ local.settings.json
 # Mono auto generated files
 mono_crash.*
 
+# Mono folder
+.mono
+
 # Build results
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
