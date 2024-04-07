@@ -5,6 +5,8 @@ using Planthor.IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Duende.IdentityServer.EntityFramework.DbContexts;
+using Duende.IdentityServer.EntityFramework.Mappers;
 
 namespace Planthor.IdentityServerAspNetIdentity;
 
@@ -14,9 +16,9 @@ public static class SeedData
     {
         ArgumentNullException.ThrowIfNull(app);
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        context.Database.EnsureDeleted();
-        context.Database.Migrate();
+        var applicationDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        applicationDbContext.Database.EnsureDeleted();
+        applicationDbContext.Database.Migrate();
 
         var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var alice = await userMgr.FindByNameAsync("alice");
@@ -89,6 +91,37 @@ public static class SeedData
         else
         {
             Log.Debug("bob already exists");
+        }
+
+        scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+        var configurationDbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+        configurationDbContext.Database.Migrate();
+        if (!configurationDbContext.Clients.Any())
+        {
+            foreach (var client in Config.Clients)
+            {
+                configurationDbContext.Clients.Add(client.ToEntity());
+            }
+            configurationDbContext.SaveChanges();
+        }
+
+        if (!configurationDbContext.IdentityResources.Any())
+        {
+            foreach (var resource in Config.IdentityResources)
+            {
+                configurationDbContext.IdentityResources.Add(resource.ToEntity());
+            }
+            configurationDbContext.SaveChanges();
+        }
+
+        if (!configurationDbContext.ApiScopes.Any())
+        {
+            foreach (var resource in Config.ApiScopes)
+            {
+                configurationDbContext.ApiScopes.Add(resource.ToEntity());
+            }
+            configurationDbContext.SaveChanges();
         }
     }
 }

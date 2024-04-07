@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations
+namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations.AspNetCoreIdentity
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialAspNetCoreIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
