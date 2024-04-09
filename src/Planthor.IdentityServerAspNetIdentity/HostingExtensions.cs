@@ -19,20 +19,37 @@ public static class HostingExtensions
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+        var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
+
         builder.Services
-            .AddIdentityServer(options =>
+            .AddIdentityServer(identityServerOptions =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+                identityServerOptions.Events.RaiseErrorEvents = true;
+                identityServerOptions.Events.RaiseInformationEvents = true;
+                identityServerOptions.Events.RaiseFailureEvents = true;
+                identityServerOptions.Events.RaiseSuccessEvents = true;
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                options.EmitStaticAudienceClaim = true;
+                identityServerOptions.EmitStaticAudienceClaim = true;
             })
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddConfigurationStore(storeOptions =>
+            {
+                storeOptions.ConfigureDbContext = contextOptions =>
+                {
+                    contextOptions.UseNpgsql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"),
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                };
+            })
+            .AddOperationalStore(storeOption =>
+            {
+                storeOption.ConfigureDbContext = contextOptions =>
+                {
+                    contextOptions.UseNpgsql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"),
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+                };
+            })
             .AddAspNetIdentity<ApplicationUser>();
 
         builder.Services.AddAuthentication();

@@ -24,7 +24,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
-      
+
       - name: Docker Login
         uses: docker/login-action@v3.0.0
         with:
@@ -45,16 +45,17 @@ jobs:
             DOCKER_TAG="${{  github.ref_name }}"
             echo DOCKER_IMAGE="ghcr.io/planthor/planthoridentityserver:$DOCKER_TAG" >> "$GITHUB_OUTPUT"
             PUSH_ENABLED=true
-          else 
+          else
             DOCKER_TAG="${{ github.head_ref }}"
+            DOCKER_TAG=${DOCKER_TAG//\//-}
             echo DOCKER_IMAGE="planthordev/identityserver:$DOCKER_TAG" >> "$GITHUB_OUTPUT"
           fi
           echo PUSH_ENABLED=$PUSH_ENABLED >> "$GITHUB_OUTPUT"
-   
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
         with:
           file: ./Dockerfile
           tags: ${{ steps.define_docker_image.outputs.DOCKER_IMAGE }}
           github-token: ${{ github.token }}
-          push:  ${{ steps.define_docker_image.outputs.PUSH_ENABLED }}
+          push: ${{ steps.define_docker_image.outputs.PUSH_ENABLED }}

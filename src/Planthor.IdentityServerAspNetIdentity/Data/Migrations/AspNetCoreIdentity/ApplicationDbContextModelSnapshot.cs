@@ -8,7 +8,7 @@ using Planthor.IdentityServerAspNetIdentity.Data;
 
 #nullable disable
 
-namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations
+namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations.AspNetCoreIdentity
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);

@@ -9,18 +9,18 @@ using Planthor.IdentityServerAspNetIdentity.Data;
 
 #nullable disable
 
-namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations
+namespace Planthor.IdentityServerAspNetIdentity.Data.Migrations.AspNetCoreIdentity
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240128054035_Initial")]
-    partial class Initial
+    [Migration("20240407042409_InitialAspNetCoreIdentity")]
+    partial class InitialAspNetCoreIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
