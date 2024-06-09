@@ -8,6 +8,7 @@ namespace Planthor.IdentityServerAspNetIdentity.Pages.Login;
 public class InputModel
 {
     [Required]
+    [Display(Name = "User Name or Email Address")]
     public string? Username { get; set; }
     [Required]
     public string? Password { get; set; }
