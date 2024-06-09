@@ -8,12 +8,48 @@
     }
 }
 
+  <header class="container-fluid bg-light py-1">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-2">
+          <div class="logo">
+            <img alt="Planthor Logo" src="~/planthor-logo.svg" width="50" height="50">
+            <span class="align-middle fw-bold fs-4">Planthor</span>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <nav class="navbar navbar-expand-md justify-content-end">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Menu</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Management</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Discover</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-outline-primary" href="#">Sign in</a>
+            <a class="btn btn-primary" href="#">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
 <div class="nav-page">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
         <a href="~/" class="navbar-brand">
-            <img alt="Duende Logo" src="~/duende-logo.svg" class="icon-banner" width="50" height="50">
-            Duende IdentityServer
+            <img alt="Planthor Logo" src="~/planthor-logo.svg" class="icon-banner" width="50" height="50">
+            Planthor IdentityServer
         </a>
 
         @if (!string.IsNullOrWhiteSpace(name))

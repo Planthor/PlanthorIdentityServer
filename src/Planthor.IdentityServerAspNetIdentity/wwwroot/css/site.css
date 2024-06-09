@@ -37,3 +37,7 @@
 .grants-page .card label {
   font-weight: bold;
 }
+body {
+  background: linear-gradient(to right, #4a68b1, #1e82c5);
+  height: 100vh;
+}
