@@ -9,5 +9,6 @@ public class AccessDeniedModel : PageModel
 {
     public void OnGet()
     {
+        // Trung: I have no idea why this is empty from Duende Identity template.
     }
 }
