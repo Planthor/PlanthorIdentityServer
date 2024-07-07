@@ -3,6 +3,8 @@ using Planthor.IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Duende.IdentityServer;
+using Microsoft.IdentityModel.Protocols.Configuration;
 
 namespace Planthor.IdentityServerAspNetIdentity;
 
@@ -52,7 +54,16 @@ public static class HostingExtensions
             })
             .AddAspNetIdentity<ApplicationUser>();
 
-        builder.Services.AddAuthentication();
+        builder
+            .Services
+            .AddAuthentication()
+            .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? throw new InvalidConfigurationException("Missing third party configuration");
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? throw new InvalidConfigurationException("Missing third party configuration");
+                facebookOptions.AccessDeniedPath = "/AccessDeniedPathInfo";
+            });
 
         return builder.Build();
     }
