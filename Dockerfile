@@ -17,6 +17,6 @@ LABEL authors="Planthor team"
 WORKDIR /app
 EXPOSE 5001
 COPY --from=build /app/src/Planthor.IdentityServerAspNetIdentity/out ./
-RUN echo 'dotnet Planthor.IdentityServerAspNetIdentity.dll /seed' > run_seed.sh && \
+RUN echo 'dotnet Planthor.IdentidtyServerAspNetIdentity.dll /seed' > run_seed.sh && \
     chmod +x run_seed.sh
 ENTRYPOINT ["dotnet", "Planthor.IdentityServerAspNetIdentity.dll"]
