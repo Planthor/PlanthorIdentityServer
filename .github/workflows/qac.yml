@@ -38,7 +38,7 @@ jobs:
           dotnet build --no-incremental
           # Coverlet report for Sonar
           dotnet test --no-build --results-directory ./coverage-report/ --collect:"XPlat Code Coverage;Format=lcov,opencover"
-          dotnet reportgenerator -reports:"coverage-report/**/coverage.opencover.xml" -targetdir:"./coverage-report/" -reporttypes:"MarkdownSummary"
+          dotnet reportgenerator -reports:"coverage-report/coverage.opencover.xml" -targetdir:"./coverage-report/" -reporttypes:"MarkdownSummary"
       
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
