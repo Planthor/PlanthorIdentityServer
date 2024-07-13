@@ -29,14 +29,17 @@ jobs:
             ${{ runner.os }}-dotnet-
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: |
+          dotnet restore
+          dotnet tool restore
 
       - name: Run coverage code
         run: |
-          dotnet tool install --global dotnet-coverage
           dotnet build --no-incremental
-          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
-
+          # Coverlet report for Sonar
+          dotnet test --no-build --results-directory ./coverage-report/ --collect:"XPlat Code Coverage;Format=lcov,opencover"
+          dotnet reportgenerator -reports:"coverage-report/**/coverage.opencover.xml" -targetdir:"./coverage-report/" -reporttypes:"MarkdownSummary"
+      
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
@@ -94,7 +97,7 @@ jobs:
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.exclusions="**src/*/wwwroot/lib/**/*"
-
+          /d:sonar.cs.opencover.reportsPaths=coverage-report/**/coverage.opencover.xml
           dotnet restore
           dotnet build --no-incremental
 
