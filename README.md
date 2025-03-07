@@ -46,8 +46,10 @@ dotnet run
 
 - Contact owner or administration for Planthor Sandbox Facebook apps id and secret.
 - Apply bash command to store app id and secret in secret Environment Variables.
+- In the project folder, use these commands:
 
 ```bash
+dotnet user-secrets init
 dotnet user-secrets set "Authentication:Facebook:AppId" "<app-id>"
 dotnet user-secrets set "Authentication:Facebook:AppSecret" "<app-secret>"
 ```
