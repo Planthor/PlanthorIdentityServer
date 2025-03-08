@@ -31,7 +31,13 @@ git clone https://github.com/Planthor/PlanthorIdentityServer.git
 dotnet restore
 ```
 
-- Run the project
+- Seed data for the project
+
+```sh
+dotnet run /seed
+```
+
+- Start the project
 
 ```sh
 dotnet run
