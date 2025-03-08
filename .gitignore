@@ -777,3 +777,6 @@ ehthumbs_vista.db
 
 # git config
 .gitconfig
+
+# project local key
+src/Planthor.IdentityServerAspNetIdentity/*

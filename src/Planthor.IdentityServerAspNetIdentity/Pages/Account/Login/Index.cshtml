@@ -24,8 +24,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" asp-for="Input.Password"></label>
-                                <input type="password" class="form-control" asp-for="Input.Password"
-                                    autocomplete="off">
+                                <input type="password" class="form-control" asp-for="Input.Password" autocomplete="off">
                             </div>
 
                             <div class="d-flex mb-3">
@@ -47,41 +46,32 @@
                             </div>
 
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary col-md-12" name="Input.Button" value="login">Sign in</button>
-                                <div class="social-login text-center mt-3">
-                                    <span class="text-muted">Or</span>
-                                    <button class="btn btn-outline-primary col-md-12">Sign in with Facebook</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary col-md-12" name="Input.Button"
+                                    value="login">Sign in</button>
+
+                                @if (Model.View.VisibleExternalProviders.Any())
+                                {
+                                    <div class="social-login text-center mt-3">
+                                        <span class="text-muted">Or</span>
+                                        <ul class="list-inline">
+                                            @foreach (var provider in Model.View.VisibleExternalProviders)
+                                            {
+                                                <li class="list-inline-item">
+                                                    <a class="btn btn-outline-primary col-md-12" asp-page="/ExternalLogin/Challenge"
+                                                        asp-route-scheme="@provider.AuthenticationScheme"
+                                                        asp-route-returnUrl="@Model.Input.ReturnUrl">
+                                                        Sign in with @provider.DisplayName
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
                             </div>
                             <div class="text-center">
                                 <a href="create-account" class="text-muted">Create an account</a>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        }
-
-        @if (Model.View.VisibleExternalProviders.Any())
-        {
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>External Account</h2>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-inline">
-                            @foreach (var provider in Model.View.VisibleExternalProviders)
-                            {
-                                <li class="list-inline-item">
-                                    <a class="btn btn-secondary" asp-page="/ExternalLogin/Challenge"
-                                        asp-route-scheme="@provider.AuthenticationScheme"
-                                        asp-route-returnUrl="@Model.Input.ReturnUrl">
-                                        @provider.DisplayName
-                                    </a>
-                                </li>
-                            }
-                        </ul>
                     </div>
                 </div>
             </div>
