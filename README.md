@@ -29,6 +29,8 @@ git clone https://github.com/Planthor/PlanthorIdentityServer.git
 
 ```sh
 dotnet restore
+$env:ConnectionStrings__DefaultConnection = "Host=localhost:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY";
+dotnet build;
 ```
 
 - Seed data for the project
