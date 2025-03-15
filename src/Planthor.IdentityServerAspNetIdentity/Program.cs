@@ -32,6 +32,10 @@ try
 
     app.Run();
 }
+catch (Exception ex) when (ex is not HostAbortedException)
+{
+    Log.Fatal(ex, "Unhandled exception");
+}
 finally
 {
     Log.Information("Shut down complete");
