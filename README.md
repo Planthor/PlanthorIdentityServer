@@ -91,6 +91,6 @@ Distributed under the MIT License. See LICENSE for more information.
 
 Pham Le Trung - <trunglepham1202@gmail.com>
 
-Project Link: https://github.com/Planthor
+Project Link - <https://github.com/Planthor>
 
 Please feel free to contact us if you need any further information or have any questions or issues. Happy coding!

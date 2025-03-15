@@ -123,5 +123,14 @@ public static class SeedData
             }
             configurationDbContext.SaveChanges();
         }
+
+        if (!configurationDbContext.ApiResources.Any())
+        {
+            foreach (var resource in Config.ApiResources)
+            {
+                configurationDbContext.ApiResources.Add(resource.ToEntity());
+            }
+            configurationDbContext.SaveChanges();
+        }
     }
 }
