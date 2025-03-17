@@ -30,9 +30,6 @@ public static class HostingExtensions
                 identityServerOptions.Events.RaiseInformationEvents = true;
                 identityServerOptions.Events.RaiseFailureEvents = true;
                 identityServerOptions.Events.RaiseSuccessEvents = true;
-
-                // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                identityServerOptions.EmitStaticAudienceClaim = true;
             })
             .AddConfigurationStore(storeOptions =>
             {
