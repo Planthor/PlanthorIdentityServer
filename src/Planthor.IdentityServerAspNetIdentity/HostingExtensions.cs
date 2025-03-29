@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Duende.IdentityServer;
 using Microsoft.IdentityModel.Protocols.Configuration;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Identity;
 
 namespace Planthor.IdentityServerAspNetIdentity;
 
@@ -23,6 +25,14 @@ public static class HostingExtensions
 
         var migrationsAssembly = typeof(Program).Assembly.GetName().Name;
 
+        var keyVaultName = "planthor-keyvault";
+        var kvUri = $"https://{keyVaultName}.vault.azure.net";
+        var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
+
+        const string DuendeLicenseName = "duende-comm-key";
+        var kvDuendeLicense = client.GetSecret(DuendeLicenseName);
+        Console.WriteLine($"Your secret is '{kvDuendeLicense.Value.Value}'.");
+
         builder.Services
             .AddIdentityServer(identityServerOptions =>
             {
@@ -33,6 +43,7 @@ public static class HostingExtensions
 
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 identityServerOptions.EmitStaticAudienceClaim = true;
+                identityServerOptions.LicenseKey = kvDuendeLicense.Value.Value;
             })
             .AddConfigurationStore(storeOptions =>
             {
@@ -54,14 +65,22 @@ public static class HostingExtensions
             })
             .AddAspNetIdentity<ApplicationUser>();
 
+        const string FBAppIdName = "fb-app-id";
+        var kvFBAppId = client.GetSecret(FBAppIdName);
+        Console.WriteLine($"Your secret is '{kvFBAppId.Value.Value}'.");
+
+        const string FBAppSecretName = "fb-app-secret";
+        var kvFBSecretId = client.GetSecret(FBAppSecretName);
+        Console.WriteLine($"Your secret is '{kvFBSecretId.Value.Value}'.");
+
         builder
             .Services
             .AddAuthentication()
             .AddFacebook(facebookOptions =>
             {
                 facebookOptions.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? throw new InvalidConfigurationException("Missing third party configuration");
-                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? throw new InvalidConfigurationException("Missing third party configuration");
+                facebookOptions.AppId = kvFBAppId.Value.ToString() ?? throw new InvalidConfigurationException("Missing third party configuration");
+                facebookOptions.AppSecret = kvFBSecretId.Value.ToString() ?? throw new InvalidConfigurationException("Missing third party configuration");
                 facebookOptions.AccessDeniedPath = "/AccessDeniedPathInfo";
             });
 
