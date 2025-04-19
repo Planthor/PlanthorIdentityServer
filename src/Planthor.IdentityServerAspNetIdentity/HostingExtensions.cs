@@ -41,8 +41,12 @@ public static class HostingExtensions
                 identityServerOptions.Events.RaiseFailureEvents = true;
                 identityServerOptions.Events.RaiseSuccessEvents = true;
 
+                identityServerOptions.Authentication.CookieLifetime = TimeSpan.FromHours(1);
+                identityServerOptions.Authentication.CookieSlidingExpiration = false;
+
+                identityServerOptions.UserInteraction.LoginUrl = "/Account/Login";
+
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                identityServerOptions.EmitStaticAudienceClaim = true;
                 identityServerOptions.LicenseKey = kvDuendeLicense.Value.Value;
             })
             .AddConfigurationStore(storeOptions =>
@@ -64,6 +68,12 @@ public static class HostingExtensions
                 };
             })
             .AddAspNetIdentity<ApplicationUser>();
+
+        builder.Services
+            .ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/path/to/login/for/aspnet_identity";
+            });
 
         const string FBAppIdName = "fb-app-id";
         var kvFBAppId = client.GetSecret(FBAppIdName);
