@@ -28,7 +28,7 @@ git clone https://github.com/Planthor/PlanthorIdentityServer.git
 - Install Nuget packages
 
 ```sh
-dotnet restore
+dotnet restore;
 $env:ConnectionStrings__DefaultConnection = "Host=localhost:5432;Username=planthor-admin;Password=Planthor@123;Database=PLANTHOR_IDENTITY";
 dotnet build;
 ```

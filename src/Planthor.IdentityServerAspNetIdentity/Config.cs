@@ -80,11 +80,15 @@ public static class Config
                 RedirectUris = {
                     "https://localhost:5173/api/auth/callback", // Local Planthor Web https
                     "http://localhost:5173/api/auth/callback", // Local Planthor Web http
+                    "https://localhost:5002/signin-oidc" // test
                 },
 
                 // where to redirect to after logout
                 // TODO: Trung: clarify this
-                PostLogoutRedirectUris = { "https://localhost:5173/signout-callback-oidc" },
+                PostLogoutRedirectUris = {
+                    "https://localhost:5173/signout-callback-oidc",
+                    "https://localhost:5002/signout-callback-oidc" // test
+                },
             },
         ];
 }

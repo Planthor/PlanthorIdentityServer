@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using IdentityModel;
 using Planthor.IdentityServerAspNetIdentity.Data;
 using Planthor.IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityModel;
 
 namespace Planthor.IdentityServerAspNetIdentity;
 
